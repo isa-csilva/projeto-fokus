@@ -12,9 +12,9 @@ const iniciarOuPausarIcone = document.querySelector('#start-pause img');
 const tempoNaTela = document.querySelector('#timer');
 
 const musica = new Audio('/sons/luna-rise-part-one.mp3');
-const audioIniciarTemp = new Audio('/sons/play.wav');
-const audioPausarTemp = new Audio('/sons/pause.mp3');
-const audioFimTemporizador = new Audio('/sons/beep.mp3');
+const audioIniciarTemp = new Audio('sons/play.wav');
+const audioPausarTemp = new Audio('sons/pause.mp3');
+const audioFimTemporizador = new Audio('sons/beep.mp3');
 
 let tempoDecorridoSegundos = 1500;
 let intervaloId = null;
@@ -54,7 +54,7 @@ function alterarContexto(contexto) {
     })
 
     html.setAttribute('data-contexto', contexto);
-    banner.setAttribute('src', `/imagens/${contexto}.png`);
+    banner.setAttribute('src', `imagens/${contexto}.png`);
     
     switch (contexto) {
         case "foco":
@@ -86,6 +86,11 @@ const contagemRegressiva = () => {
         audioFimTemporizador.play();
         audioFimTemporizador.volume = 0.2;
         alert('Tempo finalizado!');
+        const focoAtivo = html.getAttribute('data-contexto') == 'foco';
+        if (focoAtivo) {
+            const evento = new CustomEvent('FocoFinalizado');
+            document.dispatchEvent(evento);
+        }
         zerar();
         return;
     }
@@ -105,13 +110,13 @@ function iniciarOuPausar() {
     audioIniciarTemp.play();
     intervaloId = setInterval(contagemRegressiva, 1000);
     iniciarOuPausarBt.textContent = "Pausar";
-    iniciarOuPausarIcone.setAttribute('src', '/imagens/pause.png');
+    iniciarOuPausarIcone.setAttribute('src', 'imagens/pause.png');
 }
 
 function zerar() {
     clearInterval(intervaloId);
     iniciarOuPausarBt.textContent = "Começar";
-    iniciarOuPausarIcone.setAttribute('src', '/imagens/play_arrow.png');
+    iniciarOuPausarIcone.setAttribute('src', 'imagens/play_arrow.png');
     intervaloId = null;
 }
 
